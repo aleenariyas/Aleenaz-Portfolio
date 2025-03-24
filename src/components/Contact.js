@@ -27,9 +27,9 @@ export const Contact = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setButtonText("Sending...");
-    
+
     try {
-      const response = await fetch("http://localhost:5000/contact", {
+      const response = await fetch("https://my-portfolio-backend-8i9g.onrender.com/contact", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -37,14 +37,14 @@ export const Contact = () => {
         body: JSON.stringify(formDetails),
       });
 
-      setButtonText("Send");
       const result = await response.json();
+      setButtonText("Send");
       setFormDetails(formInitialDetails);
 
-      if (result.code === 200) {
+      if (response.ok) {
         setStatus({ success: true, message: 'Message sent successfully!' });
       } else {
-        setStatus({ success: false, message: 'Something went wrong, please try again later.' });
+        setStatus({ success: false, message: result.message || 'Something went wrong, please try again later.' });
       }
     } catch (error) {
       setButtonText("Send");
